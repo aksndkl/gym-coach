@@ -14,6 +14,18 @@
 
 没有 Supabase 环境变量时，应用显示配置指引，不会伪造登录或本地持久化成功。
 
+## 发布到公网
+
+此仓库使用 GitHub Pages 自动构建与发布。每次推送到 `main` 都会触发部署；公开试用网址为 `https://aksndkl.github.io/gym-coach/`（首次部署完成后可用）。
+
+1. 在 GitHub 仓库 **Settings → Secrets and variables → Actions** 添加 `VITE_SUPABASE_URL` 和 `VITE_SUPABASE_ANON_KEY` 两个 Repository secrets。
+2. 确认仓库 **Settings → Actions → General → Workflow permissions** 允许工作流运行。
+3. 在 **Settings → Pages** 选择 **GitHub Actions** 作为发布来源；如果设置页显示 Pages 尚未启用，先保存此来源。
+4. 在 Supabase **Authentication → URL Configuration** 将 `https://aksndkl.github.io` 设为 Site URL，并将 `https://aksndkl.github.io/gym-coach/` 加入 Redirect URLs。
+5. 确认数据库迁移已在 Supabase SQL Editor 执行，然后打开 GitHub 仓库的 **Actions** 页面，等待 **Deploy to GitHub Pages** 工作流成功。
+
+即使 publishable key 是可公开使用的浏览器密钥，也建议只放入 GitHub Actions secrets，绝不要放入仓库文件；数据库权限依赖 RLS。
+
 ## 初始化教练账号
 
 公开注册的账号始终默认为学员，网页端不能修改角色。创建账号并在 Auth 中验证后，由项目所有者在 Supabase SQL Editor 将该账号提升为教练（将 UUID 替换为 Auth Users 中该账号的 ID）：
